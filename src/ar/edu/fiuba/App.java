@@ -54,11 +54,22 @@ public class App {
 				String nombreApellido = partes[1];
 				String materia = partes[2];
 
-				estudiantes.computeIfAbsent(legajo, k -> new Estudiante(legajo, nombreApellido))
-						.agregarMateriaAprobada(materia);
+				if (!estudiantes.containsKey(legajo)) {
+					Estudiante estudiante = new Estudiante(legajo, nombreApellido);
+					estudiantes.put(legajo, estudiante);
+				}
+
+				estudiantes.get(legajo).agregarMateriaAprobada(materia);
 			}
+			br.close();
+
+			/*
+			 * El archivo de texto tiene que tener un salto de línea por delante del último
+			 * registro.
+			 */
+
 		} catch (FileNotFoundException e) {
-			System.err.println("El archivo aprobaciones.txt no se encontró.");
+			System.out.println("El archivo aprobaciones.txt no se encontró.");
 		} catch (IOException e) {
 			System.out.println("Error al leer el archivo.");
 		} catch (NumberFormatException e) {
